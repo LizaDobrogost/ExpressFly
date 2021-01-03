@@ -11,13 +11,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using WebApi.Data;
 
 namespace WebApi
 {
     public class Startup
-    {   
+    {
         public IConfiguration Configuration { get; }
-        
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -26,10 +28,18 @@ namespace WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddDbContext<AirportDbContext>(options =>
+                options
+                    .UseSqlServer(
+                        Configuration
+                            .GetConnectionString("Airport")
+                    )
+            );
         }
 
         public void Configure(
-            IApplicationBuilder app, 
+            IApplicationBuilder app,
             IWebHostEnvironment env
         )
         {
@@ -42,7 +52,21 @@ namespace WebApi
 
             app.UseRouting();
 
+            app.UseCors(options => 
+                    options
+                        .AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                );
+
             app.UseAuthorization();
+
+            app.UseEndpoints(
+                    endpoints =>
+                    {
+                        endpoints.MapControllers();
+                    }
+                );
         }
     }
 }
