@@ -35,3 +35,12 @@ msbuild.wrn
 
 # Visual Studio 2015
 .vs/
+
+# SQL Server files
+*.mdf
+*.ldf
+*.ndf
+
+# JetBrains Rider
+.idea/
+*.sln.iml
