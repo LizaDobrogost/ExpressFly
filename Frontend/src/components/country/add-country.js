@@ -4,7 +4,7 @@ import Country from '../../services/models/country';
 import Headline from './headline';
 
 import * as CountryService from '../../services/country-service';
-import {BadRequestError} from "../../services/reqest-error";
+import { BadRequestError } from "../../services/reqest-error";
 import ConfirmActionButton from '../general/confirm-action-button';
 
 export default function Add() {
@@ -43,7 +43,7 @@ export default function Add() {
                                     <label htmlFor="country-name">Country name</label>
                                     <input
                                         id="country-name"
-                                        type="json"
+                                        type="text"
                                         onChange={(event) => changeName(event.target.value)}
                                         value={name}
                                     />

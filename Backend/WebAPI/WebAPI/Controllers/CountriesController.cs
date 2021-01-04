@@ -11,7 +11,6 @@ namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [EnableCors]
     public class CountriesController : ControllerBase
     {
         private readonly AirportDbContext _context;
@@ -20,15 +19,13 @@ namespace WebApi.Controllers
         {
             _context = context;
         }
-
-        // GET: api/Countries
+        
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Country>>> GetCountries()
         {
             return await _context.Countries.ToListAsync();
         }
-
-        // GET: api/Countries/5
+        
         [HttpGet("{id}")]
         public async Task<ActionResult<Country>> GetCountry(int id)
         {
@@ -41,8 +38,7 @@ namespace WebApi.Controllers
 
             return country;
         }
-
-        // PUT: api/Countries/5
+        
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCountry(int id, Country country)
         {
@@ -66,33 +62,16 @@ namespace WebApi.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok();
         }
-
-        // POST: api/Countries
+        
         [HttpPost]
         public async Task<ActionResult<Country>> PostCountry(Country country)
         {
             _context.Countries.Add(country);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCountry", new {id = country.Id}, country);
-        }
-
-        // DELETE: api/Countries/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCountry(int id)
-        {
-            var country = await _context.Countries.FindAsync(id);
-            if (country == null)
-            {
-                return NotFound();
-            }
-
-            _context.Countries.Remove(country);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            return CreatedAtAction("GetCountry", new { id = country.Id }, country);
         }
 
         private bool CountryExists(int id)

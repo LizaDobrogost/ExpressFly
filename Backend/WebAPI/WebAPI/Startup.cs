@@ -29,11 +29,10 @@ namespace WebApi
         {
             services.AddControllers();
 
-            services.AddDbContext<AirportDbContext>(options =>
-                options
-                    .UseSqlServer(
-                        Configuration
-                            .GetConnectionString("Airport")
+            services.AddDbContext<AirportDbContext>(
+                options =>
+                    options.UseSqlServer(
+                        Configuration.GetConnectionString("Airport")
                     )
             );
         }
@@ -52,21 +51,22 @@ namespace WebApi
 
             app.UseRouting();
 
-            app.UseCors(options => 
+            app.UseCors(
+                options => 
                     options
                         .AllowAnyOrigin()
                         .AllowAnyHeader()
                         .AllowAnyMethod()
-                );
+            );
 
             app.UseAuthorization();
 
             app.UseEndpoints(
-                    endpoints =>
-                    {
-                        endpoints.MapControllers();
-                    }
-                );
+                endpoints => 
+                {
+                    endpoints.MapControllers();
+                }
+            );
         }
     }
 }
