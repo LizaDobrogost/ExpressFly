@@ -1,5 +1,5 @@
 ﻿import * as config  from '../config.json';
-import { createRequestResult , RequestTypes } from "./request";
+import { createRequestResult, RequestTypes } from "./request";
 
 export async function getById(id) {
     const response = await fetch(
