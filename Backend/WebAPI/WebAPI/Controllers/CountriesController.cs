@@ -1,82 +1,52 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
+using BusinessLogic.Services;
+using DataAccess.Repositories;
 using Microsoft.EntityFrameworkCore;
-using WebApi.Data;
 using WebApi.Models;
+
 namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class CountriesController : ControllerBase
     {
-        private readonly AirportDbContext _context;
+        private readonly ICountryService _countryService;
 
-        public CountriesController(AirportDbContext context)
+        public CountriesController(ICountryService countryService)
         {
-            _context = context;
+            _countryService = countryService;
         }
-        
+
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Country>>> GetCountries()
+        public async Task<IReadOnlyCollection<Country>> GetCountries()
         {
-            return await _context.Countries.ToListAsync();
+            return await _countryService.GetAllAsync();
         }
-        
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Country>> GetCountry(int id)
-        {
-            var country = await _context.Countries.FindAsync(id);
 
-            if (country == null)
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<ActionResult<Country>> GetAsync(int id)
+        {
+            Country foundCountry = await _countryService.GetByIdAsync(id);
+
+            if (foundCountry == null)
             {
                 return NotFound();
             }
 
-            return country;
+            return Ok(foundCountry);
         }
-        
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutCountry(int id, Country country)
-        {
-            country.Id = id;
 
-            _context.Entry(country).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CountryExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return Ok();
-        }
-        
         [HttpPost]
-        public async Task<ActionResult<Country>> PostCountry(Country country)
+        public async Task<ActionResult<Country>> AddAsync(Country country)
         {
-            _context.Countries.Add(country);
-            await _context.SaveChangesAsync();
+            Country addCountry = await _countryService.AddAsync(country);
 
-            return CreatedAtAction("GetCountry", new { id = country.Id }, country);
-        }
-
-        private bool CountryExists(int id)
-        {
-            return _context.Countries.Any(e => e.Id == id);
+            return Ok(new { addCountry.Id });
         }
     }
 }
