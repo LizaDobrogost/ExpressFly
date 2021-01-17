@@ -69,5 +69,11 @@
     <Build Include="dbo\Tables\Countries.sql" />
     <Build Include="dbo\Stored Procedures\AddCountry.sql" />
     <Build Include="dbo\Stored Procedures\UpdateCountry.sql" />
+    <Build Include="dbo\Stored Procedures\CheckCountryDuplicate.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
 </Project>
