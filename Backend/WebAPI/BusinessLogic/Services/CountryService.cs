@@ -3,47 +3,78 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
+using BusinessLogic.Models;
+using DataAccess.Entities;
 using DataAccess.Repositories;
-using WebApi.Models;
 
 namespace BusinessLogic.Services
 {
     public class CountryService : ICountryService
     {
         private readonly ICountryRepository _countryRepository;
+        private readonly IMapper _mapper;
 
-        public CountryService(ICountryRepository countryRepository)
+
+        public CountryService(ICountryRepository countryRepository, IMapper mapper)
         {
             _countryRepository = countryRepository;
+            _mapper = mapper;
         }
 
-        public async Task<IReadOnlyCollection<Country>> GetAllAsync()
+        public async Task<IReadOnlyCollection<Country>> GetAllAsync() 
         {
-            IReadOnlyCollection<Country> countriesDal = await _countryRepository.GetAllAsync();
-            return countriesDal;
+            IReadOnlyCollection<CountryEntity> countriesEntities = await _countryRepository.GetAllAsync();
+
+            IReadOnlyCollection<Country> countries = countriesEntities.Select(_mapper.Map<Country>).ToList();
+
+            return countries;
         }
 
-        public async Task<Country> GetByIdAsync(int id)
+        public async Task<Country> GetAsync(int id)
         {
-            Country foundCountryDal = await _countryRepository.GetAsync(id);
+            CountryEntity foundCountryEntity = await _countryRepository.GetAsync(id);
 
-            return foundCountryDal;
+            return _mapper.Map<Country>(foundCountryEntity);
         }
 
-        public async Task<Country> AddAsync(Country country)
+        public async Task<int> AddAsync(Country country)
         {
-            Country addedCountryId = await _countryRepository.AddAsync(country);
+            CountryEntity countryDal = _mapper.Map<CountryEntity>(country);
+
+            bool countryDuplicate = await _countryRepository.CheckDuplicateAsync(countryDal);
+
+            if (countryDuplicate)
+            {
+                return 0;
+            }
+
+            int addedCountryId = await _countryRepository.AddAsync(countryDal);
 
             return addedCountryId;
         }
 
-        public async Task<Country> UpdateAsync(Country country)
+        public async Task<CountryEntity> UpdateAsync(Country country)
         {
-            Country oldCountryDal = await _countryRepository.GetAsync(country.Id);
+            CountryEntity oldCountryDal = await _countryRepository.GetAsync(country.Id);
 
-            Country cont= await _countryRepository.UpdateAsync(oldCountryDal);
+            if (oldCountryDal == null)
+            {
+                return null;
+            }
 
-            return cont;
+            CountryEntity countryDal = _mapper.Map<CountryEntity>(country);
+
+            bool duplicate = await _countryRepository.CheckDuplicateAsync(countryDal);
+
+            if (duplicate)
+            {
+                return null;
+            }
+
+            await _countryRepository.UpdateAsync(countryDal);
+
+            return countryDal;
         }
     }
 }
