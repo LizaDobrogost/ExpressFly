@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -5,13 +6,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using BusinessLogic;
 using DataAccess;
-using Microsoft.EntityFrameworkCore;
-using WebApi.Data;
 
 namespace WebApi
 {
     public class Startup
     {
+        private readonly string AllowedSpecificOrigins = "_AllowedSpecificOrigins";
         public IConfiguration Configuration { get; }
 
         public Startup(IConfiguration configuration)
@@ -21,14 +21,24 @@ namespace WebApi
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IConnectionSettings, ConnectionSettings>();
+            services.AddCorsPolicy(Configuration, AllowedSpecificOrigins);
             
             BusinessLogicModule.Register(services);
             DataAccessModule.Register(services);
 
+            MapperConfiguration mapperConfiguration = new MapperConfiguration(
+                config =>
+                    {
+                        WebApiMapping.Initialize(config);
+                        BusinessLogicMapping.Mapp(config);
+                    }
+                );
+
+            mapperConfiguration.CompileMappings();
+
+            services.AddSingleton(mapperConfiguration.CreateMapper());
+
             services.AddControllers();
-            
-            services.AddMemoryCache();
         }
 
         public void Configure(
@@ -45,13 +55,7 @@ namespace WebApi
 
             app.UseRouting();
 
-            app.UseCors(
-                options =>
-                    options
-                        .AllowAnyOrigin()
-                        .AllowAnyHeader()
-                        .AllowAnyMethod()
-            );
+            app.UseCors(AllowedSpecificOrigins);
 
             app.UseAuthorization();
 
