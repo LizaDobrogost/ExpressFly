@@ -5,25 +5,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Dapper;
+using DataAccess.Entities;
 using Microsoft.Data.SqlClient;
-using WebApi.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace DataAccess.Repositories
 {
-    class CountryRepository : ICountryRepository
+    public class CountryRepository : ICountryRepository
     {
-        private readonly IConnectionSettings _connectionSettings;
+        private readonly IConfiguration _connectionSettings;
 
-        public CountryRepository(IConnectionSettings settings)
+        public CountryRepository(IConfiguration settings)
         {
             _connectionSettings = settings;
         }
 
-        public async Task<IReadOnlyCollection<Country>> GetAllAsync()
+        public async Task<IReadOnlyCollection<CountryEntity>> GetAllAsync()
         {
-            await using SqlConnection db = new SqlConnection(_connectionSettings.ConnectionString);
+            await using SqlConnection db = new SqlConnection(_connectionSettings.GetConnectionString("AirportDatabase"));
 
-            IEnumerable<Country> countries = await db.QueryAsync<Country>(
+            IEnumerable<CountryEntity> countries = await db.QueryAsync<CountryEntity>(
                 "GetAllCountries",
                 null,
                 commandType: CommandType.StoredProcedure);
@@ -31,33 +33,45 @@ namespace DataAccess.Repositories
             return countries.ToList();
         }
 
-        public async Task<Country> GetAsync(int id)
+        public async Task<CountryEntity> GetAsync(int id)
         {
-            await using SqlConnection db = new SqlConnection(_connectionSettings.ConnectionString);
+            await using SqlConnection
+                db = new SqlConnection(_connectionSettings.GetConnectionString("AirportDatabase"));
 
-            return await db.QuerySingleOrDefaultAsync<Country>(
+            return await db.QuerySingleOrDefaultAsync<CountryEntity>(
                 "GetCountryById",
                 new {id},
                 commandType: CommandType.StoredProcedure);
         }
 
-        public async Task<Country> AddAsync(Country country)
+        public async Task<int> AddAsync(CountryEntity country)
         {
-            await using SqlConnection db = new SqlConnection(_connectionSettings.ConnectionString);
+            await using SqlConnection
+                db = new SqlConnection(_connectionSettings.GetConnectionString("AirportDatabase"));
 
-            return await db.QuerySingleOrDefaultAsync<Country>(
+            return await db.QuerySingleOrDefaultAsync<int>(
                 "AddCountry",
                 new {name = country.Name},
                 commandType: CommandType.StoredProcedure);
         }
 
-        public async Task<Country> UpdateAsync(Country country)
+        public async Task UpdateAsync(CountryEntity country)
         {
-            await using SqlConnection db = new SqlConnection(_connectionSettings.ConnectionString);
+            using SqlConnection db = new SqlConnection(_connectionSettings.GetConnectionString("AirportDatabase"));
 
-            return await db.QuerySingleOrDefaultAsync<Country>(
+            await db.ExecuteAsync(
                 "UpdateCountry",
                 country,
+                commandType: CommandType.StoredProcedure);
+        }
+
+        public async Task<bool> CheckDuplicateAsync(CountryEntity country)
+        {
+            using SqlConnection db = new SqlConnection(_connectionSettings.GetConnectionString("AirportDatabase"));
+
+            return await db.ExecuteScalarAsync<bool>(
+                "CheckCountryDuplicate",
+                new {name = country.Name},
                 commandType: CommandType.StoredProcedure);
         }
     }

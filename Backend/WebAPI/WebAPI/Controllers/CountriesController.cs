@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using BusinessLogic.Services;
-using DataAccess.Repositories;
-using Microsoft.EntityFrameworkCore;
+using DataAccess.Entities;
 using WebApi.Models;
+using BlCountry = BusinessLogic.Models.Country;
 
 namespace WebApi.Controllers
 {
@@ -15,23 +14,27 @@ namespace WebApi.Controllers
     public class CountriesController : ControllerBase
     {
         private readonly ICountryService _countryService;
+        private readonly IMapper _mapper;
 
-        public CountriesController(ICountryService countryService)
+        public CountriesController(ICountryService countryService, IMapper mapper)
         {
             _countryService = countryService;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<IReadOnlyCollection<Country>> GetCountries()
+        public async Task<IReadOnlyCollection<BlCountry>> GetCountries()
         {
             return await _countryService.GetAllAsync();
         }
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<ActionResult<Country>> GetAsync(int id)
+        public async Task<ActionResult> GetAsync(int id)
         {
-            Country foundCountry = await _countryService.GetByIdAsync(id);
+            BlCountry foundCountryBl = await _countryService.GetAsync(id);
+
+            Country foundCountry = _mapper.Map<Country>(foundCountryBl);
 
             if (foundCountry == null)
             {
@@ -42,11 +45,13 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Country>> AddAsync(Country country)
+        public async Task<ActionResult<CountryEntity>> AddAsync(Country country)
         {
-            Country addCountry = await _countryService.AddAsync(country);
+            BlCountry countryBl = _mapper.Map<BlCountry>(country);
 
-            return Ok(new { addCountry.Id });
+            await _countryService.AddAsync(countryBl);
+
+            return Ok();
         }
     }
 }
