@@ -1,5 +1,5 @@
-﻿import * as config  from '../config.json';
-import { createRequestResult, RequestTypes } from "./request";
+﻿import * as config from '../config.json';
+import {createRequestResult, RequestTypes} from "./request";
 
 export async function getById(id) {
     const response = await fetch(
@@ -7,22 +7,7 @@ export async function getById(id) {
         {
             method: 'GET',
             mode: 'cors',
-            headers:{
-                'Content-Type': 'application/json',
-            },
-        }
-    );
-
-    return await createRequestResult(response, RequestTypes.ContentExpected);
-}
-
-export async function searchByName(nameFilter) {
-    const response = await fetch(
-        `${config.API_URL}/Countries?nameFilter=${encodeURIComponent(nameFilter)}`,
-        {
-            method: 'GET',
-            mode: 'cors',
-            headers:{
+            headers: {
                 'Content-Type': 'application/json',
             },
         }
@@ -38,7 +23,7 @@ export async function add(country) {
             method: 'POST',
             mode: 'cors',
             body: JSON.stringify(country),
-            headers:{
+            headers: {
                 'Content-Type': 'application/json',
             },
         }
@@ -54,7 +39,7 @@ export async function update(country) {
             method: 'PUT',
             mode: 'cors',
             body: JSON.stringify(country),
-            headers:{
+            headers: {
                 'Content-Type': 'application/json',
             },
         }
