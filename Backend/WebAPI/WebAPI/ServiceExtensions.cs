@@ -9,23 +9,24 @@ namespace WebApi
 {
     public static class ServiceExtensions
     {
+        private const string AllowedSpecificOrigin = "SpecificCorsPolicy";
         public static void AddCorsPolicy(
             this IServiceCollection services,
-            IConfiguration configuration,
-            string allowedSpecificOrigins
+            IConfiguration configuration
         )
         {
-            services.AddCors(options =>
+            services.AddCors(
+                options =>
                 {
-                    options.AddPolicy(allowedSpecificOrigins,
+                    options.AddPolicy(
+                        AllowedSpecificOrigin,
                         builder =>
                         {
                             builder
                                 .WithOrigins(
-                                    configuration.
-                                        GetSection("AllowedOrigins")
+                                    configuration.GetSection("AllowedOrigins")
                                         .Get<string[]>()
-                                    )
+                                )
                                 .AllowAnyHeader()
                                 .AllowAnyMethod();
                         }

@@ -46,3 +46,7 @@ msbuild.wrn
 .idea/
 *.sln.iml
 /Backend/WebAPI/node_modules/*
+*.tmp
+*.dbmdl
+*.jfm
+

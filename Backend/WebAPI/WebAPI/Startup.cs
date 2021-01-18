@@ -11,7 +11,6 @@ namespace WebApi
 {
     public class Startup
     {
-        private readonly string AllowedSpecificOrigins = "_AllowedSpecificOrigins";
         public IConfiguration Configuration { get; }
 
         public Startup(IConfiguration configuration)
@@ -21,7 +20,7 @@ namespace WebApi
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCorsPolicy(Configuration, AllowedSpecificOrigins);
+            services.AddCorsPolicy(Configuration);
             
             BusinessLogicModule.Register(services);
             DataAccessModule.Register(services);
@@ -55,7 +54,7 @@ namespace WebApi
 
             app.UseRouting();
 
-            app.UseCors(AllowedSpecificOrigins);
+            app.UseCors("SpecificCorsPolicy");
 
             app.UseAuthorization();
 
