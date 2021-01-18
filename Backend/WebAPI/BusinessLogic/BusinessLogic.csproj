@@ -6,6 +6,8 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="Mapster" Version="7.0.1" />
+    <PackageReference Include="Mapster.Core" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
