@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using BusinessLogic.Models;
 using WebApi.Models;
-using BlCountry = BusinessLogic.Models.Country;
 
 namespace WebApi
 {
@@ -12,8 +12,8 @@ namespace WebApi
     {
         public static void Initialize(IMapperConfigurationExpression config)
         {
-            config.CreateMap<Country, BlCountry>();
-            config.CreateMap<BlCountry, Country>();
+            config.CreateMap<CountryModel, CountryBusinessModel>();
+            config.CreateMap<CountryBusinessModel, CountryModel>();
         }
     }
 }

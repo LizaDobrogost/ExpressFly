@@ -1,5 +1,5 @@
 ﻿import HttpStatus from 'http-status-codes';
-import { BadRequestError, NotFoundError } from "./reqest-error";
+import { BadRequestError, NotFoundError } from './reqest-error';
 
 
 export async function createRequestResult(response, requestType) {

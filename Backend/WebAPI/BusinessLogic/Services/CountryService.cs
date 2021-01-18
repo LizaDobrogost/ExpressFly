@@ -22,25 +22,25 @@ namespace BusinessLogic.Services
             _mapper = mapper;
         }
 
-        public async Task<IReadOnlyCollection<Country>> GetAllAsync() 
+        public async Task<IReadOnlyCollection<CountryBusinessModel>> GetAllAsync() 
         {
             IReadOnlyCollection<CountryEntity> countriesEntities = await _countryRepository.GetAllAsync();
-
-            IReadOnlyCollection<Country> countries = countriesEntities.Select(_mapper.Map<Country>).ToList();
+            
+            IReadOnlyCollection<CountryBusinessModel> countries = countriesEntities.Select( _mapper.Map<CountryBusinessModel>).ToList();
 
             return countries;
         }
 
-        public async Task<Country> GetAsync(int id)
+        public async Task<CountryBusinessModel> GetAsync(int id)
         {
             CountryEntity foundCountryEntity = await _countryRepository.GetAsync(id);
 
-            return _mapper.Map<Country>(foundCountryEntity);
+            return _mapper.Map<CountryBusinessModel>(foundCountryEntity);
         }
 
-        public async Task<int> AddAsync(Country country)
+        public async Task<int> AddAsync(CountryBusinessModel countryBusinessModel)
         {
-            CountryEntity countryDal = _mapper.Map<CountryEntity>(country);
+            CountryEntity countryDal = _mapper.Map<CountryEntity>(countryBusinessModel);
 
             bool countryDuplicate = await _countryRepository.CheckDuplicateAsync(countryDal);
 
@@ -54,16 +54,16 @@ namespace BusinessLogic.Services
             return addedCountryId;
         }
 
-        public async Task<CountryEntity> UpdateAsync(Country country)
+        public async Task<CountryEntity> UpdateAsync(CountryBusinessModel countryBusinessModel)
         {
-            CountryEntity oldCountryDal = await _countryRepository.GetAsync(country.Id);
+            CountryEntity oldCountryDal = await _countryRepository.GetAsync(countryBusinessModel.Id);
 
             if (oldCountryDal == null)
             {
                 return null;
             }
 
-            CountryEntity countryDal = _mapper.Map<CountryEntity>(country);
+            CountryEntity countryDal = _mapper.Map<CountryEntity>(countryBusinessModel);
 
             bool duplicate = await _countryRepository.CheckDuplicateAsync(countryDal);
 

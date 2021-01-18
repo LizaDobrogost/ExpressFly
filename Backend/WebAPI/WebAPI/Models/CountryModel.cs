@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace WebApi.Models
 {
-    public class Country
+    public class CountryModel
     {
-        [Key]
         public int? Id { get; set; }
 
         [Required]

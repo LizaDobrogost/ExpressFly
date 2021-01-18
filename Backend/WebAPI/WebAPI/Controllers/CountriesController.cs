@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using BusinessLogic.Models;
 using Microsoft.AspNetCore.Mvc;
 using BusinessLogic.Services;
 using DataAccess.Entities;
 using WebApi.Models;
-using BlCountry = BusinessLogic.Models.Country;
 
 namespace WebApi.Controllers
 {
@@ -23,7 +23,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IReadOnlyCollection<BlCountry>> GetCountries()
+        public async Task<IReadOnlyCollection<CountryBusinessModel>> GetCountries()
         {
             return await _countryService.GetAllAsync();
         }
@@ -32,22 +32,22 @@ namespace WebApi.Controllers
         [Route("{id}")]
         public async Task<ActionResult> GetAsync(int id)
         {
-            BlCountry foundCountryBl = await _countryService.GetAsync(id);
+            CountryBusinessModel foundCountryBl = await _countryService.GetAsync(id);
 
-            Country foundCountry = _mapper.Map<Country>(foundCountryBl);
+            CountryModel foundCountryModel = _mapper.Map<CountryModel>(foundCountryBl);
 
-            if (foundCountry == null)
+            if (foundCountryModel == null)
             {
                 return NotFound();
             }
 
-            return Ok(foundCountry);
+            return Ok(foundCountryModel);
         }
 
         [HttpPost]
-        public async Task<ActionResult<CountryEntity>> AddAsync(Country country)
+        public async Task<ActionResult<CountryEntity>> AddAsync(CountryModel countryModel)
         {
-            BlCountry countryBl = _mapper.Map<BlCountry>(country);
+            CountryBusinessModel countryBl = _mapper.Map<CountryBusinessModel>(countryModel);
 
             await _countryService.AddAsync(countryBl);
 

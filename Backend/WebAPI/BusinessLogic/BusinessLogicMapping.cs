@@ -11,8 +11,8 @@ namespace BusinessLogic
     {
         public static void Mapp(IMapperConfigurationExpression configuration)
         {
-            configuration.CreateMap<Country, CountryEntity>();
-            configuration.CreateMap<CountryEntity, Country>();
+            configuration.CreateMap<CountryBusinessModel, CountryEntity>();
+            configuration.CreateMap<CountryEntity, CountryBusinessModel>();
         }
     }
 }

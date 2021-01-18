@@ -8,7 +8,6 @@ export default function ConfirmActionButton(props) {
             className="custom-button big non-selectable"
             onClick={props.onClick}
         >
-            
             {props.buttonContent}
         </button>
     );
