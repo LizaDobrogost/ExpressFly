@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using BusinessLogic.Services;
 using DataAccess.Entities;
 using WebApi.Models;
+using CountryModel = BusinessLogic.Models.CountryModel;
 
 namespace WebApi.Controllers
 {
@@ -23,7 +24,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IReadOnlyCollection<CountryBusinessModel>> GetCountries()
+        public async Task<IReadOnlyCollection<CountryModel>> GetCountries()
         {
             return await _countryService.GetAllAsync();
         }
@@ -32,9 +33,9 @@ namespace WebApi.Controllers
         [Route("{id}")]
         public async Task<ActionResult> GetAsync(int id)
         {
-            CountryBusinessModel foundCountryBl = await _countryService.GetAsync(id);
+            CountryModel foundCountryBl = await _countryService.GetAsync(id);
 
-            CountryModel foundCountryModel = _mapper.Map<CountryModel>(foundCountryBl);
+            Models.CountryModel foundCountryModel = _mapper.Map<Models.CountryModel>(foundCountryBl);
 
             if (foundCountryModel == null)
             {
@@ -45,9 +46,9 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<CountryEntity>> AddAsync(CountryModel countryModel)
+        public async Task<ActionResult<CountryEntity>> AddAsync(Models.CountryModel countryModel)
         {
-            CountryBusinessModel countryBl = _mapper.Map<CountryBusinessModel>(countryModel);
+            CountryModel countryBl = _mapper.Map<CountryModel>(countryModel);
 
             await _countryService.AddAsync(countryBl);
 

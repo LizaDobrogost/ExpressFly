@@ -24,7 +24,7 @@ namespace DataAccess.Repositories
             await using SqlConnection db = new SqlConnection(_connectionSettings.GetConnectionString("AirportDatabase"));
 
             IEnumerable<CountryEntity> countries = await db.QueryAsync<CountryEntity>(
-                "GetAllCountries",
+                "GetCountries",
                 null,
                 commandType: CommandType.StoredProcedure);
 

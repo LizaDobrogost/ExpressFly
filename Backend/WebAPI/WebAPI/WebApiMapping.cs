@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BusinessLogic.Models;
 using WebApi.Models;
+using CountryModel = BusinessLogic.Models.CountryModel;
 
 namespace WebApi
 {
@@ -12,8 +13,8 @@ namespace WebApi
     {
         public static void Initialize(IMapperConfigurationExpression config)
         {
-            config.CreateMap<CountryModel, CountryBusinessModel>();
-            config.CreateMap<CountryBusinessModel, CountryModel>();
+            config.CreateMap<Models.CountryModel, CountryModel>();
+            config.CreateMap<CountryModel, Models.CountryModel>();
         }
     }
 }

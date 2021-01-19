@@ -63,7 +63,7 @@
     <Folder Include="dbo\Stored Procedures\" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="dbo\Stored Procedures\GetAllCountries.sql" />
+    <Build Include="dbo\Stored Procedures\GetCountries.sql" />
     <Build Include="dbo\Stored Procedures\GetCountryById.sql" />
     <Build Include="dbo\Tables\Cities.sql" />
     <Build Include="dbo\Tables\Countries.sql" />

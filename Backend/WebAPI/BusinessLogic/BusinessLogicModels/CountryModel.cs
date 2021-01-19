@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BusinessLogic.Models
 {
-    public class CountryBusinessModel
+    public class CountryModel
     {
         public int Id { get; init; }
         public string Name { get; init; }

@@ -9,9 +9,9 @@ namespace BusinessLogic.Services
 {
     public interface ICountryService
     {
-        Task<IReadOnlyCollection<CountryBusinessModel>> GetAllAsync();
-        Task<CountryBusinessModel> GetAsync(int id);
-        Task<int> AddAsync(CountryBusinessModel countryBusinessModel);
-        Task<CountryEntity> UpdateAsync(CountryBusinessModel countryBusinessModel);
+        Task<IReadOnlyCollection<CountryModel>> GetAllAsync();
+        Task<CountryModel> GetAsync(int id);
+        Task<int> AddAsync(CountryModel countryModel);
+        Task<CountryEntity> UpdateAsync(CountryModel countryModel);
     }
 }

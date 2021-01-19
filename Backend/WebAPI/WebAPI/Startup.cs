@@ -29,7 +29,7 @@ namespace WebApi
                 config =>
                     {
                         WebApiMapping.Initialize(config);
-                        BusinessLogicMapping.Mapp(config);
+                        BusinessLogicMapping.Initialize(config);
                     }
                 );
 
