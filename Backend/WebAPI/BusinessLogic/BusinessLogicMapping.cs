@@ -9,10 +9,10 @@ namespace BusinessLogic
 {
     public static class BusinessLogicMapping
     {
-        public static void Mapp(IMapperConfigurationExpression configuration)
+        public static void Initialize(IMapperConfigurationExpression configuration)
         {
-            configuration.CreateMap<CountryBusinessModel, CountryEntity>();
-            configuration.CreateMap<CountryEntity, CountryBusinessModel>();
+            configuration.CreateMap<CountryModel, CountryEntity>();
+            configuration.CreateMap<CountryEntity, CountryModel>();
         }
     }
 }

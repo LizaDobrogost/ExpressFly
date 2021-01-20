@@ -35,20 +35,20 @@ namespace WebApi.Controllers
         {
             CountryModel foundCountryBl = await _countryService.GetAsync(id);
 
-            Models.CountryModel foundCountryModel = _mapper.Map<Models.CountryModel>(foundCountryBl);
+            Models.CountryDto foundCountryDto = _mapper.Map<Models.CountryDto>(foundCountryBl);
 
-            if (foundCountryModel == null)
+            if (foundCountryDto == null)
             {
                 return NotFound();
             }
 
-            return Ok(foundCountryModel);
+            return Ok(foundCountryDto);
         }
 
         [HttpPost]
-        public async Task<ActionResult<CountryEntity>> AddAsync(Models.CountryModel countryModel)
+        public async Task<ActionResult<CountryEntity>> AddAsync(Models.CountryDto countryDto)
         {
-            CountryModel countryBl = _mapper.Map<CountryModel>(countryModel);
+            CountryModel countryBl = _mapper.Map<CountryModel>(countryDto);
 
             await _countryService.AddAsync(countryBl);
 
