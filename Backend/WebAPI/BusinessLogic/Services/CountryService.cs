@@ -22,7 +22,7 @@ namespace BusinessLogic.Services
             _mapper = mapper;
         }
 
-        public async Task<IReadOnlyCollection<CountryModel>> GetAllAsync() 
+        public async Task<IReadOnlyCollection<CountryModel>> GetAsync() 
         {
             IReadOnlyCollection<CountryEntity> countriesEntities = await _countryRepository.GetAllAsync();
             
@@ -46,7 +46,7 @@ namespace BusinessLogic.Services
 
             if (countryDuplicate)
             {
-                throw new Exception("This country already exists");
+              return 0;
             }
 
             int addedCountryId = await _countryRepository.AddAsync(countryDal);
