@@ -26,7 +26,7 @@ namespace WebApi.Controllers
         [HttpGet]
         public async Task<IReadOnlyCollection<CountryModel>> GetCountries()
         {
-            return await _countryService.GetAllAsync();
+            return await _countryService.GetAsync();
         }
 
         [HttpGet]

@@ -22,7 +22,7 @@ namespace BusinessLogic.Services
             _mapper = mapper;
         }
 
-        public async Task<IReadOnlyCollection<CountryModel>> GetAllAsync() 
+        public async Task<IReadOnlyCollection<CountryModel>> GetAsync() 
         {
             IReadOnlyCollection<CountryEntity> countriesEntities = await _countryRepository.GetAllAsync();
             
