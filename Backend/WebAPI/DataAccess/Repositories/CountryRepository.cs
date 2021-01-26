@@ -33,8 +33,7 @@ namespace DataAccess.Repositories
 
         public async Task<CountryEntity> GetAsync(int id)
         {
-            await using SqlConnection
-                db = new SqlConnection(_connectionSettings.GetConnectionString("AirportDatabase"));
+            await using SqlConnection db = new SqlConnection(_connectionSettings.GetConnectionString("AirportDatabase"));
 
             return await db.QuerySingleOrDefaultAsync<CountryEntity>(
                 "GetCountryById",
