@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using BusinessLogic;
 using BusinessLogic.Models;
 using Microsoft.AspNetCore.Mvc;
 using BusinessLogic.Services;
@@ -33,9 +34,9 @@ namespace WebApi.Controllers
         [Route("{id}")]
         public async Task<ActionResult> GetAsync(int id)
         {
-            CountryModel foundCountryBl = await _countryService.GetAsync(id);
+            CountryModel foundCountry = await _countryService.GetAsync(id);
 
-            Models.CountryDto foundCountryDto = _mapper.Map<Models.CountryDto>(foundCountryBl);
+            CountryDto foundCountryDto = _mapper.Map<CountryDto>(foundCountry);
 
             if (foundCountryDto == null)
             {
@@ -45,14 +46,35 @@ namespace WebApi.Controllers
             return Ok(foundCountryDto);
         }
 
+        // POST api/countries
         [HttpPost]
-        public async Task<ActionResult<CountryEntity>> AddAsync(Models.CountryDto countryDto)
+        public async Task<ActionResult<CountryEntity>> AddAsync(CountryDto countryDto)
         {
-            CountryModel countryBl = _mapper.Map<CountryModel>(countryDto);
+            CountryModel country = _mapper.Map<CountryModel>(countryDto);
 
-            await _countryService.AddAsync(countryBl);
+            Response result = await _countryService.AddAsync(country);
+
+            if (result.ResultType == ResultTypes.Duplicate)
+            {
+                return BadRequest();
+            }
 
             return Ok();
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> UpdateAsync(CountryDto country)
+        {
+            CountryModel countryModel = _mapper.Map<CountryModel>(country);
+
+            ResultTypes updateResult = await _countryService.UpdateAsync(countryModel);
+
+            return updateResult switch
+            {
+                ResultTypes.NotFound => NotFound(),
+                ResultTypes.Duplicate => BadRequest(),
+                _ => Ok()
+            };
         }
     }
 }
