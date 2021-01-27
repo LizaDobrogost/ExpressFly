@@ -33,23 +33,21 @@ namespace DataAccess.Repositories
 
         public async Task<CountryEntity> GetAsync(int id)
         {
-            await using SqlConnection
-                db = new SqlConnection(_connectionSettings.GetConnectionString("AirportDatabase"));
+            await using SqlConnection db = new SqlConnection(_connectionSettings.GetConnectionString("AirportDatabase"));
 
             return await db.QuerySingleOrDefaultAsync<CountryEntity>(
                 "GetCountryById",
-                new {id},
+                new { id },
                 commandType: CommandType.StoredProcedure);
         }
 
         public async Task<int> AddAsync(CountryEntity country)
         {
-            await using SqlConnection
-                db = new SqlConnection(_connectionSettings.GetConnectionString("AirportDatabase"));
+            await using SqlConnection db = new SqlConnection(_connectionSettings.GetConnectionString("AirportDatabase"));
 
             return await db.QuerySingleOrDefaultAsync<int>(
                 "AddCountry",
-                new {name = country.Name},
+                new { name = country.Name },
                 commandType: CommandType.StoredProcedure);
         }
 
@@ -69,7 +67,7 @@ namespace DataAccess.Repositories
 
             return await db.ExecuteScalarAsync<bool>(
                 "CheckCountryDuplicate",
-                new {name = country.Name},
+                new { name = country.Name },
                 commandType: CommandType.StoredProcedure);
         }
     }

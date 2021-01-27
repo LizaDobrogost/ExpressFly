@@ -16,7 +16,6 @@ export default function Add() {
             //Message
             return;
         }
-
         let newCountry = new Country(null, name);
 
         try {

@@ -38,43 +38,43 @@ namespace BusinessLogic.Services
             return _mapper.Map<CountryModel>(foundCountryEntity);
         }
 
-        public async Task<int> AddAsync(CountryModel countryModel)
+        public async Task<Response> AddAsync(CountryModel countryModel)
         {
-            CountryEntity countryDal = _mapper.Map<CountryEntity>(countryModel);
+            CountryEntity country = _mapper.Map<CountryEntity>(countryModel);
 
-            bool countryDuplicate = await _countryRepository.CheckDuplicateAsync(countryDal);
+            bool countryDuplicate = await _countryRepository.CheckDuplicateAsync(country);
 
             if (countryDuplicate)
             {
-              return 0;
+                return new Response(ResultTypes.Duplicate);
             }
 
-            int addedCountryId = await _countryRepository.AddAsync(countryDal);
+            await _countryRepository.AddAsync(country);
 
-            return addedCountryId;
+            return new Response(ResultTypes.Ok);
         }
 
-        public async Task<CountryEntity> UpdateAsync(CountryModel countryModel)
+        public async Task<ResultTypes> UpdateAsync(CountryModel countryModel)
         {
-            CountryEntity oldCountryDal = await _countryRepository.GetAsync(countryModel.Id);
+            CountryEntity countryEntity = await _countryRepository.GetAsync(countryModel.Id);
 
-            if (oldCountryDal == null)
+            if (countryEntity == null)
             {
-                return null;
+                return ResultTypes.NotFound;
             }
 
-            CountryEntity countryDal = _mapper.Map<CountryEntity>(countryModel);
+            CountryEntity country = _mapper.Map<CountryEntity>(countryModel);
 
-            bool duplicate = await _countryRepository.CheckDuplicateAsync(countryDal);
+            bool duplicate = await _countryRepository.CheckDuplicateAsync(country);
 
             if (duplicate)
             {
-                return null;
+                return ResultTypes.Duplicate;
             }
 
-            await _countryRepository.UpdateAsync(countryDal);
+            await _countryRepository.UpdateAsync(country);
 
-            return countryDal;
+            return ResultTypes.Ok;
         }
     }
 }

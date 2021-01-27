@@ -13,8 +13,8 @@ namespace WebApi
     {
         public static void Initialize(IMapperConfigurationExpression config)
         {
-            config.CreateMap<Models.CountryDto, CountryModel>();
-            config.CreateMap<CountryModel, Models.CountryDto>();
+            config.CreateMap<CountryDto, CountryModel>();
+            config.CreateMap<CountryModel, CountryDto>();
         }
     }
 }
