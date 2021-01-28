@@ -45,12 +45,7 @@ namespace WebApi
             IWebHostEnvironment env
         )
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
-            app.ConfigureExceptionHandler();
+            app.UseExceptionHandling();
 
             app.UseHttpsRedirection();
 

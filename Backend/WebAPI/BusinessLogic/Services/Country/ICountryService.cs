@@ -11,7 +11,7 @@ namespace BusinessLogic.Services
     {
         Task<IReadOnlyCollection<CountryModel>> GetAsync();
         Task<CountryModel> GetAsync(int id);
-        Task<Response> AddAsync(CountryModel countryModel);
-        Task<ResultTypes> UpdateAsync(CountryModel countryModel);
+        Task<CountryModel> AddAsync(CountryModel countryModel);
+        Task<CountryModel> UpdateAsync(CountryModel countryModel);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,7 +39,7 @@ namespace BusinessLogic.Services
             return _mapper.Map<CountryModel>(foundCountryEntity);
         }
 
-        public async Task<Response> AddAsync(CountryModel countryModel)
+        public async Task<CountryModel> AddAsync(CountryModel countryModel)
         {
             CountryEntity country = _mapper.Map<CountryEntity>(countryModel);
 
@@ -46,21 +47,21 @@ namespace BusinessLogic.Services
 
             if (countryDuplicate)
             {
-                return new Response(ResultTypes.Duplicate);
+                throw new InvalidDataException("This country already exists");
             }
 
             await _countryRepository.AddAsync(country);
 
-            return new Response(ResultTypes.Ok);
+            return countryModel;
         }
 
-        public async Task<ResultTypes> UpdateAsync(CountryModel countryModel)
+        public async Task<CountryModel> UpdateAsync(CountryModel countryModel)
         {
             CountryEntity countryEntity = await _countryRepository.GetAsync(countryModel.Id);
 
             if (countryEntity == null)
             {
-                return ResultTypes.NotFound;
+                throw new InvalidDataException("Country not found");
             }
 
             CountryEntity country = _mapper.Map<CountryEntity>(countryModel);
@@ -69,12 +70,12 @@ namespace BusinessLogic.Services
 
             if (duplicate)
             {
-                return ResultTypes.Duplicate;
+                throw new InvalidDataException("This country already exists");
             }
 
             await _countryRepository.UpdateAsync(country);
 
-            return ResultTypes.Ok;
+            return countryModel;
         }
     }
 }

@@ -28,7 +28,6 @@ namespace WebApi.Controllers
         [HttpGet]
         public async Task<IReadOnlyCollection<CountryModel>> GetCountries()
         {
-            
             return await _countryService.GetAsync();
         }
 
@@ -48,18 +47,12 @@ namespace WebApi.Controllers
             return Ok(foundCountryDto);
         }
 
-        // POST api/countries
         [HttpPost]
-        public async Task<ActionResult<CountryEntity>> AddAsync(CountryDto countryDto)
+        public async Task<ActionResult> AddAsync(CountryDto countryDto)
         {
             CountryModel country = _mapper.Map<CountryModel>(countryDto);
 
-            Response result = await _countryService.AddAsync(country);
-
-            if (result.ResultType == ResultTypes.Duplicate)
-            {
-                return BadRequest();
-            }
+            await _countryService.AddAsync(country);
 
             return Ok();
         }
@@ -69,14 +62,9 @@ namespace WebApi.Controllers
         {
             CountryModel countryModel = _mapper.Map<CountryModel>(country);
 
-            ResultTypes updateResult = await _countryService.UpdateAsync(countryModel);
+            await _countryService.UpdateAsync(countryModel);
 
-            return updateResult switch
-            {
-                ResultTypes.NotFound => NotFound(),
-                ResultTypes.Duplicate => BadRequest(),
-                _ => Ok()
-            };
+            return Ok();
         }
     }
 }
