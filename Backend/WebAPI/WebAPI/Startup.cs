@@ -27,11 +27,11 @@ namespace WebApi
 
             MapperConfiguration mapperConfiguration = new MapperConfiguration(
                 config =>
-                    {
-                        WebApiMapping.Initialize(config);
-                        BusinessLogicMapping.Initialize(config);
-                    }
-                );
+                {
+                    WebApiMapping.Initialize(config);
+                    BusinessLogicMapping.Initialize(config);
+                }
+            );
 
             mapperConfiguration.CompileMappings();
 
