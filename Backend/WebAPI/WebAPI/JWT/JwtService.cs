@@ -16,10 +16,21 @@ namespace WebApi.JWT
     public class JwtService : IJwtService
     {
         private IConfiguration _configuration;
+
         public JwtService(IConfiguration configuration)
         {
             _configuration = configuration;
         }
+
+        private IEnumerable<Claim> CreateClaims(Account user)
+        {
+            return new Claim[]
+            {
+                new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new(ClaimTypes.Role, user.Role.ToString())
+            };
+        }
+
         public string CreateTokenAsync(Account user)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Secret"]));
@@ -37,13 +48,6 @@ namespace WebApi.JWT
             string tokenString = tokenHandler.WriteToken(accessToken);
 
             return tokenString;
-        }
-        private IEnumerable<Claim> CreateClaims(Account user)
-        {
-            var userIdClaim = new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString());
-            var userRoleClaim = new Claim(ClaimTypes.Role, user.Role.ToString());
-
-            return new[] { userIdClaim, userRoleClaim };
         }
     }
 }
