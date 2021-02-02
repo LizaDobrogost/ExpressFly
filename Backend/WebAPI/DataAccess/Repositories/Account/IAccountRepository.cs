@@ -12,5 +12,6 @@ namespace DataAccess.Repositories.Account
         Task<AccountEntity> GetByEmailAsync(string email);
         Task<bool> CheckDuplicateAsync(AccountEntity account);
         Task<AccountEntity> CreateAccountAsync(AccountEntity account);
+        Task<bool> CheckPasswordAsync(string password);
     }
 }

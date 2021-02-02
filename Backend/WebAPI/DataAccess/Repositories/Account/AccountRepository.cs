@@ -25,6 +25,12 @@ namespace DataAccess.Repositories.Account
                 .FirstOrDefaultAsync(x => x.Email == email);
         }
 
+        public async Task<bool> CheckPasswordAsync(string password)
+        {
+            return await _context
+                .Accounts
+                .AnyAsync(s => s.Password.Equals(password));
+        }
 
         public async Task<bool> CheckDuplicateAsync(AccountEntity account)
         {

@@ -34,6 +34,13 @@ namespace BusinessLogic.Services
         {
             AccountEntity dalAccount = await _accountRepository.GetByEmailAsync(account.Email);
 
+            bool checkPassword = await _accountRepository.CheckPasswordAsync(account.Password);
+
+            if (!checkPassword)
+            {
+                throw new InvalidDataException("This password doesn't exist");
+            }
+
             if (dalAccount == null)
             {
                 throw new InvalidDataException("This email doesn't exist");
