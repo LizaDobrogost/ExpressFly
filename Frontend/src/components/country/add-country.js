@@ -2,31 +2,26 @@
 
 import Country from '../../services/models/country';
 import Headline from './headline';
-
 import * as CountryService from '../../services/country-service';
-import { BadRequestError } from '../../services/reqest-error';
 import ConfirmActionButton from '../general/confirm-action-button';
-import {Dropdown, DropdownButton} from "react-bootstrap";
+import { invalidInput, added, defaultErrorMessage } from '../general/message-box-messages';
 
 export default function Add() {
     const [name, changeName] = useState();
+    const [changeMessageBoxValue] = useState(null);
 
     async function onDataSave() {
         if (!name) {
-            //Message
+            changeMessageBoxValue(invalidInput());
             return;
         }
         let newCountry = new Country(null, name);
 
         try {
             await CountryService.add(newCountry);
-            //Message
+            changeMessageBoxValue(added());
         } catch (ex) {
-            if (ex instanceof BadRequestError) {
-                //Message
-            } else {
-                //Message
-            }
+            changeMessageBoxValue(defaultErrorMessage());
         }
     }
     
