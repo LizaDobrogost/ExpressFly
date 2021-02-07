@@ -35,3 +35,18 @@ msbuild.wrn
 
 # Visual Studio 2015
 .vs/
+
+# SQL Server files
+*.mdf
+*.ldf
+*.ndf
+*.log
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+/Backend/WebAPI/node_modules/*
+*.tmp
+*.dbmdl
+*.jfm
+

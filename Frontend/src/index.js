@@ -1,11 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
-import reportWebVitals from './reportWebVitals';
+import { BrowserRouter } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import AuthComponent from './components/AuthComponent';
+import './index.css';
 
 ReactDOM.render(
-  <React.StrictMode>
-  </React.StrictMode>,
-  document.getElementById('root')
+    <BrowserRouter>
+        <AuthComponent/>
+    </BrowserRouter>,
+    document.getElementById('root')
 );
-reportWebVitals();
