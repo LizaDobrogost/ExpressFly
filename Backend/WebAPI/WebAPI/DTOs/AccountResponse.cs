@@ -16,7 +16,6 @@ namespace WebAPI.Models
         public int Role { get; set; }
         public string Token { get; set; }
 
-
         public AccountResponse(
             int? id,
             string firstName,

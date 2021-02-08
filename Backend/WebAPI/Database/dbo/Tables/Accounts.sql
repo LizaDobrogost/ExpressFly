@@ -1,4 +1,5 @@
-﻿create table [dbo].[Accounts] (
+
+create table [dbo].[Accounts] (
     [Id]             int             identity (1, 1) not null,
     [FirstName]      nvarchar (50)   not null,
     [SecondName]     nvarchar (50)   not null,

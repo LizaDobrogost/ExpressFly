@@ -11,6 +11,8 @@ namespace BusinessLogic
         public static void Register(IServiceCollection services)
         {
             services.AddSingleton<ICountryService, CountryService>();
+
+            services.AddTransient<IAccountService, AccountService>();
         }
     }
 }

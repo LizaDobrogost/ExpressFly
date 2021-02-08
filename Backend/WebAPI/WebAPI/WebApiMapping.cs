@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BusinessLogic.BusinessLogicModels;
 using BusinessLogic.Models;
-using WebAPI.Models;
-using CountryModel = BusinessLogic.Models.CountryModel;
+
+using WebApi.DTOs;
+using WebApi.Models;
 
 namespace WebApi
 {
@@ -14,6 +15,7 @@ namespace WebApi
     {
         public static void Initialize(IMapperConfigurationExpression config)
         {
+
             config.CreateMap<City, CityModel>();
             config.CreateMap<CityModel, City>();
 
