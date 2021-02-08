@@ -4,12 +4,15 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebApi.Models
+namespace WebAPI.Models
 {
-    public class CountryDto
+    public class City
     {
         public int? Id { get; set; }
-
+        
+        [Required]
+        public int CountryId { get; set; }
+        
         [Required]
         public string Name { get; set; }
     }

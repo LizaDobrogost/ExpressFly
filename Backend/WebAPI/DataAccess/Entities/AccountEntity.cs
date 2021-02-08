@@ -1,10 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using Common;
 
-namespace DataAccess.Entities
+namespace DataAccessLayer.Models
 {
     public class AccountEntity
     {
@@ -12,7 +11,8 @@ namespace DataAccess.Entities
         public string FirstName { get; set; }
         public string SecondName { get; set; }
         public string Email { get; set; }
-        public string Password { get; set; }
+        public byte[] PasswordHash { get; set; }
+        public byte[] Salt { get; set; }
         public AccountRole Role { get; set; }
     }
 }
